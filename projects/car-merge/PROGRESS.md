@@ -1,6 +1,6 @@
 # PROGRESS – car-merge (Khazar Motor BMW X7 reel)   (updated 2026-11-25)
 Phase: preview (part 1 draft)
-Current version: v2 → renders/final/car_merge_part1_v2.mp4 (real X2–X6 photos from user)
+Current version: v3 → renders/final/car_merge_part1_v3.mp4 (reference SFX)
 Done:
 - Reference analysed (merge-game X2→X7, tonal ding per merge, X7 bursts into real car)
 - User's X7 cut out from listing screenshot (rembg isnet) → assets/images/tiers/x7.png
