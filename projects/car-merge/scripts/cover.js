@@ -22,8 +22,8 @@ const fi = f => 'data:font/otf;base64,' + fs.readFileSync('/usr/share/fonts/open
     T('khazar.motor', W - 40 - pw / 2 + 22, 113, '600 40px Inter', '#fff', 'ltr');
     T('BMW X7  ·  xDRIVE40i', W / 2, 245, '500 46px Inter', 'rgba(255,255,255,0.92)', 'ltr', '12px');
     x.fillStyle = LIME; x.fillRect(W / 2 - 80, 288, 160, 5);
-    T('تحویل پشت فنس انزلی', W / 2, 370, '500 52px Vazir', 'rgba(255,255,255,0.78)');
-    T('حدود ۳۰ هزار دلار', W / 2, 490, '900 140px Vazir', '#fff');
+    T('قیمت خودرو', W / 2, 370, '500 52px Vazir', 'rgba(255,255,255,0.78)');
+    T('۲۶ هزار دلار', W / 2, 490, '900 140px Vazir', '#fff');
     T('رئیس بزرگ منتظرته', W / 2, 650, '800 76px Vazir', LIME, 'rtl', '0px', 0);
     return c.toDataURL('image/png');
   }, [b64(`assets/kling/stills/${bg}.png`, 'image/png'), [['Vazir', '500', fv('Vazirmatn-Medium.ttf')], ['Vazir', '800', fv('Vazirmatn-ExtraBold.ttf')], ['Vazir', '900', fv('Vazirmatn-Black.ttf')], ['Inter', '500', fi('Inter-Medium.otf')], ['Inter', '600', fi('Inter-SemiBold.otf')]], carY]);
