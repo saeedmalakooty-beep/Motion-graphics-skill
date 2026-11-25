@@ -1,0 +1,7 @@
+cache/
+node_modules/
+renders/previews/
+assets/footage/ref_*
+assets/sfx/mix_raw.wav
+.env
+*.env
