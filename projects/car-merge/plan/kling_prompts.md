@@ -1,0 +1,3 @@
+# Kling still prompts (kling-image-o1, 1k, 9:16, 1 image each)
+CAR = Keep this exact car identical to the reference photo: a black 2020 BMW X7 xDrive40i (G07 generation, pre-facelift), Carbon Black metallic paint, large chrome kidney grille with vertical slats, slim LED headlights, chrome lower front trim, aluminium running boards, silver Y-spoke alloy wheels, chrome window surround, roof rails, plate 3194 DI.
+STYLE = golden hour, warm low sun, trees with green-gold leaves, gravel road, cinematic luxury car commercial, shallow depth of field, warm film grade, clean glossy paint without water spots, vertical 9:16, no text, no watermark, no people.
