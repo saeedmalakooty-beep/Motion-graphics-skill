@@ -16,4 +16,4 @@ Rebuild: node src/render.js --events cache/events.json && python3 -I scripts/sfx
 ## Part 2 (cinematic, Kling) – started 2026-11-25
 Plan: plan/part2_cinematic.md (shot list + Persian VO script v1). Reference: assets/footage/ref_rrs.mp4
 Kling: Pro account, 1245 credits at start. Rules: 9:16, 720p, 5 s, no audio, cheapest model, 1 take/shot.
-Next step: user records Persian VO over renders/previews/full_rough_v1.mp4 (part 2 = 27 s from 21.4 s) → retime cuts to VO, add on-screen text (specs, price card, CTA khazar-motor.com), light music bed, final mix.
+Next step: user reviews full_v2 + records VO over part 2 (starts 21.4 s, 32.5 s long) → retime src/overlay_data.js to VO → node scripts/edit_part2.mjs --vo <file>.
