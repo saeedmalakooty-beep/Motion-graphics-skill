@@ -160,9 +160,9 @@
     const kp = eOut(prog(t, P + 1.6, 0.4)); ctx.save(); ctx.globalAlpha *= kp; text('پلاک‌گذاری بر عهده خریدار', W / 2, 735, `500 30px ${FA}`, 'rgba(255,255,255,0.62)'); ctx.restore();
     // engagement line: words pop in, then the lime prompt wipes in and bobs
     ctx.save(); ctx.shadowColor = 'rgba(0,0,0,0.6)'; ctx.shadowBlur = 20;
-    popWords(['ارزششو', 'داره؟'], W / 2, 1600, `900 112px ${FA}`, '#fff', t, P + 1.8, { stagger: 0.18 }); ctx.restore();
+    popWords(['رئیس', 'بزرگ', 'منتظرته'], W / 2, 1600, `900 104px ${FA}`, '#fff', t, P + 1.8, { stagger: 0.15 }); ctx.restore();
     const bob = Math.sin((t - P) * 4) * 4 * prog(t, P + 2.8, 0.3);
-    wipe('تو کامنت بگو', W / 2, 1722 + bob, `700 52px ${FA}`, LIME, prog(t, P + 2.3, 0.6), { size: 45 });
+    wipe('همین الان پیام بده', W / 2, 1722 + bob, `700 52px ${FA}`, LIME, prog(t, P + 2.3, 0.6), { size: 45 });
     ctx.restore();
   }
 
