@@ -25,6 +25,9 @@ for (const c of O.CUTS) {
     ff('-loop', '1', '-t', String(c.dur), '-i', `${T}/last.png`, '-vf', 'fps=30,setsar=1', ...ENC, f);
   } else if (c.src === 'end') {
     ff('-f', 'lavfi', '-t', String(c.dur), '-i', 'color=c=0x0c0f0d:s=1080x1920:r=30', ...ENC, f);
+  } else if (c.speed !== 1) { // slow motion with motion-compensated in-between frames (no freeze, keeps moving)
+    ff('-ss', String(c.inn), '-t', String(c.dur * c.speed + 0.1), '-i', `${V}/${c.src}.mp4`, '-vf',
+      `setpts=PTS/${c.speed},minterpolate=fps=30:mi_mode=mci:mc_mode=aobmc:vsbmc=1,${FIT}`, '-t', String(c.dur), ...ENC, f);
   } else {
     ff('-ss', String(c.inn), '-t', String(c.dur), '-i', `${V}/${c.src}.mp4`, '-vf', FIT, ...ENC, f);
   }
