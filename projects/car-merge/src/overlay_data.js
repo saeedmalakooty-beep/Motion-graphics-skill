@@ -10,7 +10,7 @@
     ['f', 'v5b', 0.3, 3.0],    // straight rear, plate
     ['g', 'kb:s6', 0, 2.0],    // taillight (still, push-in)
     ['h', 'v7', 0.8, 3.4],     // interior
-    ['i', 'v0', 1.8, 5.6, 0.58], // front hero under the price card: keeps moving (3.24 s of source in slow motion)
+    ['i', 'v0', 1.8, 5.6, 'extend'], // front hero under the price card: real clip at normal speed, then a smooth digital push to the cut (no invented frames)
     ['k', 'end', 0, 4.5],      // website end card (full graphic)
   ];
   let t = 0; const CUTS = SHOTS.map(s => { const c = { id: s[0], src: s[1], inn: s[2], dur: s[3], speed: s[4] || 1, t0: t }; t += s[3]; return c; });

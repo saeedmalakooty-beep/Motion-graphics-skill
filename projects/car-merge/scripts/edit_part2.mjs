@@ -25,9 +25,11 @@ for (const c of O.CUTS) {
     ff('-loop', '1', '-t', String(c.dur), '-i', `${T}/last.png`, '-vf', 'fps=30,setsar=1', ...ENC, f);
   } else if (c.src === 'end') {
     ff('-f', 'lavfi', '-t', String(c.dur), '-i', 'color=c=0x0c0f0d:s=1080x1920:r=30', ...ENC, f);
-  } else if (c.speed !== 1) { // slow motion with motion-compensated in-between frames (no freeze, keeps moving)
-    ff('-ss', String(c.inn), '-t', String(c.dur * c.speed + 0.1), '-i', `${V}/${c.src}.mp4`, '-vf',
-      `setpts=PTS/${c.speed},minterpolate=fps=30:mi_mode=mci:mc_mode=aobmc:vsbmc=1,${FIT}`, '-t', String(c.dur), ...ENC, f);
+  } else if (c.speed === 'extend') { // clip at normal speed, last frame held, one continuous digital push over the whole shot
+    const n = Math.round(c.dur * 30);
+    ff('-ss', String(c.inn), '-i', `${V}/${c.src}.mp4`, '-vf', `${FIT},tpad=stop_mode=clone:stop_duration=${c.dur}`, '-t', String(c.dur), ...ENC, `${T}/${c.id}_raw.mp4`);
+    execFileSync('python3', ['-I', 'scripts/smooth_push.py', `${T}/${c.id}_raw.mp4`, `${T}/${c.id}_push.avi`, '0.07'], { stdio: 'inherit' });
+    ff('-i', `${T}/${c.id}_push.avi`, '-vf', 'setsar=1', ...ENC, f);
   } else {
     ff('-ss', String(c.inn), '-t', String(c.dur), '-i', `${V}/${c.src}.mp4`, '-vf', FIT, ...ENC, f);
   }
