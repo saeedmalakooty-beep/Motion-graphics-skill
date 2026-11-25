@@ -16,4 +16,4 @@ Rebuild: node src/render.js --events cache/events.json && python3 -I scripts/sfx
 ## Part 2 (cinematic, Kling) – started 2026-11-25
 Plan: plan/part2_cinematic.md (shot list + Persian VO script v1). Reference: assets/footage/ref_rrs.mp4
 Kling: Pro account, 1245 credits at start. Rules: 9:16, 720p, 5 s, no audio, cheapest model, 1 take/shot.
-Next step: user approves stills (renders/previews/part2_stills_v1.jpg) → image_to_video 5 s 720p no audio per shot.
+Next step: user OKs transition test + 200 credits → videos for s1,s3,s4,s5,s7 (v3_0_turbo 720p 5 s); s2,s6 animated in code from stills.

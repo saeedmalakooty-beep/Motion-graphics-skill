@@ -12,7 +12,7 @@ const from = +opt('from', 0), to = +opt('to', TL.DURATION), fps = +opt('fps', 30
 const out = opt('out', 'cache/frames'), jpg = a.includes('--jpg');
 fs.mkdirSync(out, { recursive: true });
 const b64 = (p, mime) => `data:${mime};base64,` + fs.readFileSync(path.join(ROOT, p)).toString('base64');
-const images = { bg: b64('assets/images/end_bg_blur.jpg', 'image/jpeg') };
+const images = { s0: b64('assets/kling/stills/s0.png', 'image/png') };
 for (let i = 2; i <= 7; i++) images['x' + i] = b64(`assets/images/tiers/x${i}.png`, 'image/png');
 const F = '/usr/share/fonts/opentype/inter/';
 const font = f => `data:font/otf;base64,` + fs.readFileSync(F + f).toString('base64');

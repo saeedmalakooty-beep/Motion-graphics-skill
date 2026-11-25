@@ -174,49 +174,43 @@
     ctx.restore();
   }
 
-  // ---------- finale: X7 flies to centre, becomes the real car ----------
+  // ---------- finale: X7 flies to centre and lands exactly where the car sits in the
+  // first frame of the Kling opening shot (s0); the scene scans in behind it -> cut to video.
+  const S0 = { w: 768, h: 1360, box: [31, 397, 740, 1000] };          // car bbox inside s0.png
+  const s0k = W / S0.w, s0y = (H - S0.h * s0k) / 2;
+  const X7R = { x: S0.box[0] * s0k, y: s0y + S0.box[1] * s0k, w: (S0.box[2] - S0.box[0]) * s0k, h: (S0.box[3] - S0.box[1]) * s0k };
+  function revealK(t) { return eInOutCubic(prog(t, FINALE.reveal, 0.6)); }
   function finale(t) {
     const F = FINALE;
     if (t < F.fly) return;
-    const p = TL.slotPos(TL.X7_SLOT), cam = camera(F.fly);
-    // screen pos of the tile at fly start
-    const sx = W / 2 + (p.x - cam.cx) * cam.zoom, sy = H / 2 + (p.y - cam.cy) * cam.zoom;
-    const kf = eInOutCubic(prog(t, F.fly, F.reveal - F.fly));
-    const x = lerp(sx, W / 2, kf), y = lerp(sy, H * 0.44, kf);
-    const scale = lerp(cam.zoom, 1000 / carW(7), eOutCubic(prog(t, F.fly + 0.1, F.reveal - F.fly + 0.3)));
-    // backdrop: blurred photo of the real location fades in
-    const kb = prog(t, F.reveal - 0.1, 0.6);
-    if (kb > 0) {
-      const bg = IMG.bg, bh = H, bw = bh * bg.width / bg.height;
-      ctx.save(); ctx.globalAlpha = kb * 0.55; ctx.drawImage(bg, (W - bw) / 2, 0, bw, bh);
-      ctx.globalAlpha = kb * 0.55; ctx.fillStyle = '#000'; ctx.fillRect(0, 0, W, H); ctx.restore();
+    const p = TL.slotPos(TL.X7_SLOT), cam = camera(F.fly), img = IMG.x7;
+    // tile rect at fly start (same maths as car())
+    const w0 = carW(7) * cam.zoom, h0 = w0 * img.height / img.width;
+    const cx0 = W / 2 + (p.x - cam.cx) * cam.zoom, cy0 = H / 2 + (p.y - cam.cy) * cam.zoom - 10 * cam.zoom;
+    const k = eInOutCubic(prog(t, F.fly, F.reveal - F.fly));
+    const w = lerp(w0, X7R.w, k), h = lerp(h0, X7R.h, k);
+    const cx = lerp(cx0, X7R.x + X7R.w / 2, k), cy = lerp(cy0, X7R.y + X7R.h / 2, k);
+    // scene scans in from the top behind the car
+    const ks = revealK(t), ly = lerp(-60, H + 60, ks);
+    if (ks > 0) {
+      ctx.save(); ctx.beginPath(); ctx.rect(0, 0, W, Math.max(0, ly)); ctx.clip();
+      ctx.drawImage(IMG.s0, 0, s0y, W, S0.h * s0k); ctx.restore();
     }
-    car(7, x, y, { scale, label: t < F.reveal, labelScale: 1, glow: lerp(1, 0.35, kf) });
-    // scan-line reveal: a lime laser sweeps down the car
-    const ks = prog(t, F.reveal, 0.55);
-    if (ks > 0 && ks < 1) {
-      const top = y - 420, bot = y + 380, ly = lerp(top, bot, eInOutCubic(ks));
+    if (ks < 1) {
+      ctx.save(); ctx.beginPath(); ctx.rect(0, ly, W, H); ctx.clip();
+      ctx.save(); ctx.shadowColor = LIME; ctx.shadowBlur = 50 * (1 - k * 0.6); ctx.drawImage(img, cx - w / 2, cy - h / 2, w, h); ctx.restore();
+      ctx.drawImage(img, cx - w / 2, cy - h / 2, w, h); ctx.restore();
+      if (t < F.reveal - 0.05) { // label rides under the car until the reveal
+        ctx.save(); ctx.globalAlpha = clamp(1 - k * 2); ctx.translate(cx, cy + h / 2 + 40); ctx.font = 'italic 900 54px Inter';
+        ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillStyle = LIME; ctx.fillText('X7', 0, 0); ctx.restore();
+      }
+    }
+    if (ks > 0 && ks < 1) { // lime scan line
       ctx.save(); ctx.globalCompositeOperation = 'lighter';
-      const g = ctx.createLinearGradient(0, ly - 40, 0, ly + 40);
-      g.addColorStop(0, 'rgba(198,255,0,0)'); g.addColorStop(0.5, 'rgba(198,255,0,0.9)'); g.addColorStop(1, 'rgba(198,255,0,0)');
-      ctx.fillStyle = g; ctx.fillRect(0, ly - 40, W, 80);
-      ctx.fillStyle = 'rgba(255,255,255,0.95)'; ctx.fillRect(0, ly - 2, W, 4);
-      ctx.restore();
-    }
-    // white flash at the reveal moment
-    const kfl = prog(t, F.reveal, 0.35);
-    if (kfl > 0 && kfl < 1) { ctx.save(); ctx.globalAlpha = (1 - kfl) * 0.7; ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, W, H); ctx.restore(); }
-    // title
-    const kt = prog(t, F.title, 0.5);
-    if (kt > 0) {
-      ctx.save(); ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-      ctx.globalAlpha = kt; ctx.translate(W / 2, 1420 + (1 - eOutCubic(kt)) * 40);
-      ctx.font = 'italic 900 150px Inter'; ctx.fillStyle = '#fff'; ctx.fillText('BMW X7', 0, 0);
-      ctx.save(); ctx.letterSpacing = '18px'; ctx.font = '600 48px Inter'; ctx.fillStyle = LIME; ctx.fillText('2020', 9, 105); ctx.restore();
-      ctx.restore();
-      // tracking line
-      const kl = eOutCubic(prog(t, F.title + 0.15, 0.6));
-      ctx.save(); ctx.fillStyle = LIME; ctx.fillRect(W / 2 - 260 * kl, 1590, 520 * kl, 4); ctx.restore();
+      const g = ctx.createLinearGradient(0, ly - 50, 0, ly + 50);
+      g.addColorStop(0, 'rgba(198,255,0,0)'); g.addColorStop(0.5, 'rgba(198,255,0,0.85)'); g.addColorStop(1, 'rgba(198,255,0,0)');
+      ctx.fillStyle = g; ctx.fillRect(0, ly - 50, W, 100);
+      ctx.fillStyle = 'rgba(255,255,255,0.95)'; ctx.fillRect(0, ly - 2, W, 4); ctx.restore();
     }
   }
 
@@ -227,10 +221,11 @@
     header(t, 1);
     if (fade > 0 || t < FINALE.fly) game(t, Math.max(fade, 0));
     finale(t);
+    if (revealK(t) >= 1) return;                        // last frames = clean s0, matches the video
     // vignette
     const v = ctx.createRadialGradient(W / 2, H / 2, H * 0.35, W / 2, H / 2, H * 0.8);
     v.addColorStop(0, 'rgba(0,0,0,0)'); v.addColorStop(1, 'rgba(0,0,0,0.45)');
-    ctx.fillStyle = v; ctx.fillRect(0, 0, W, H);
+    ctx.save(); ctx.globalAlpha = 1 - revealK(t); ctx.fillStyle = v; ctx.fillRect(0, 0, W, H); ctx.restore();
   }
 
   async function init(scale, assets) {

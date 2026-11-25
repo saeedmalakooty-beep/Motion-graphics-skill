@@ -51,8 +51,7 @@
     hold: X7_HIT,                 // X7 forms
     fly: X7_HIT + 0.9,            // X7 flies to centre + grows
     reveal: X7_HIT + 1.55,        // scan-line reveal of the real car
-    title: X7_HIT + 2.1,
-    end: X7_HIT + 4.8,
+    end: X7_HIT + 2.6,          // a few clean frames of s0, then the Kling video takes over
   };
   const TL = { W, H, BPM, BEAT, SLIDE, COLS, ROWS, events, X7_SLOT, FINALE, DURATION: FINALE.end };
   TL.slotPos = slotPos;
